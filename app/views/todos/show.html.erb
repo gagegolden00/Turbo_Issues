@@ -1,1 +1,9 @@
-<h1>show here we view specific details about a certain todo and can edit them</h1>
+<h1>Show: Specific details about a certain todo</h1>
+<!-- Display the details of the todo item -->
+<p><strong>Title:</strong> <%= @todo.name %></p>
+<p><strong>Description:</strong> <%= @todo.description %></p>
+<p><strong>Status:</strong> <%= @todo.status %></p>
+
+<!-- Provide a link to edit the todo item -->
+<%= link_to "Edit", edit_todo_path(@todo), remote: true %>
+<%= button_to "Delete", todo_path(@todo), data: { turbo_method: :delete }, remote: true %>

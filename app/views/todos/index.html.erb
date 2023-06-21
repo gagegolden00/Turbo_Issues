@@ -1,1 +1,17 @@
-<h1>index Here we can list all todos and create, delete</h1>
+<div class="container mx-auto px-4">
+  <h1 class="text-2xl font-bold mb-4">Index: List all todos</h1>
+
+  <!-- List all the todo items -->
+  <div class="space-y-4">
+    <% @todos.each do |todo| %>
+      <%= render partial: 'todo_partial', locals: { todo: todo } %>
+    <% end %>
+  </div>
+
+  <!-- Provide a form to create a new todo item -->
+  <div class="mt-4">
+    <%= render partial: 'form_partial', locals: { todo: Todo.new } %>
+  </div>
+</div>
+
+

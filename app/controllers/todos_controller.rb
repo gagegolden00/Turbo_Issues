@@ -1,5 +1,5 @@
 class TodosController < ApplicationController
-  before_action :set_page, only: [:show, :edit, :update, :destroy]
+  before_action :set_todo, only: [:show, :edit, :update, :destroy]
   
   def index
     @todos = Todo.all
@@ -14,9 +14,10 @@ class TodosController < ApplicationController
   
   def create
     @todo = Todo.new(page_params)
-    
     if @todo.save
-      redirect_to @todo, notice: 'Page was successfully created.'
+      #  'todos' refers to ID in partial
+      render turbo_stream: turbo_stream.append('todos', partial: 'todo_partial', locals: {todo: @todo}),
+      notice: 'Task was successfully created.'
     else
       render :new
     end
@@ -24,7 +25,8 @@ class TodosController < ApplicationController
   
   def update
     if @todo.update(page_params)
-      redirect_to @todo, notice: 'Page was successfully updated.'
+      render turbo_stream: turbo_stream.replace('todos', partial: 'todo_partial', locals: {todo: @todo}),
+             notice: 'Tasks were updated.'
     else
       render :edit
     end
@@ -35,16 +37,18 @@ class TodosController < ApplicationController
   
   def destroy
     @todo.destroy
-    redirect_to @todos, notice: 'Page was successfully destroyed.'
+    render turbo_stream: turbo_stream.remove('todos', partial: 'todo_partial', locales: {todo: @todo}),
+           notice: 'Task was successfully deleted.'
   end
   
   private
   
-  def set_page
+  def set_todo
     @todo = Todo.find(params[:id])
   end
   
   def page_params
     params.require(:todo).permit(:name)
   end
+  
 end
