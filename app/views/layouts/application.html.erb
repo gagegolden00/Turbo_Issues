@@ -11,6 +11,11 @@
     <%= javascript_importmap_tags %>
 
     <%= render 'shared/nav' %>
+    <% if current_user %>
+      <p>Welcome, <%= current_user.email %>!</p>
+    <% else %>
+      <p>No user signed in.</p>
+    <% end %>
     <p class="notice"><%= notice %></p>
     <p class="alert"><%= alert %></p>
   </head>

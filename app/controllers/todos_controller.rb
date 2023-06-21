@@ -3,6 +3,7 @@ class TodosController < ApplicationController
   
   def index
     @todos = Todo.all
+    @todo = Todo.new
   end
   
   def show
@@ -13,20 +14,19 @@ class TodosController < ApplicationController
   end
   
   def create
-    @todo = Todo.new(page_params)
+    @todo = Todo.new(todo_params)
     if @todo.save
-      #  'todos' refers to ID in partial
-      render turbo_stream: turbo_stream.append('todos', partial: 'todo_partial', locals: {todo: @todo}),
-      notice: 'Task was successfully created.'
+      render turbo_stream: turbo_stream.append('todos', partial: 'todo_partial', locals: { todo: @todo }),
+             notice: 'Task was successfully created.'
     else
       render :new
     end
   end
   
   def update
-    if @todo.update(page_params)
-      render turbo_stream: turbo_stream.replace('todos', partial: 'todo_partial', locals: {todo: @todo}),
-             notice: 'Tasks were updated.'
+    if @todo.update(todo_params)
+      render turbo_stream: turbo_stream.replace('todos', partial: 'todo_partial', locals: { todo: @todo }),
+             notice: 'Task was successfully updated.'
     else
       render :edit
     end
@@ -37,7 +37,7 @@ class TodosController < ApplicationController
   
   def destroy
     @todo.destroy
-    render turbo_stream: turbo_stream.remove('todos', partial: 'todo_partial', locales: {todo: @todo}),
+    render turbo_stream: turbo_stream.remove('todos', partial: 'todo_partial', locals: { todo: @todo }),
            notice: 'Task was successfully deleted.'
   end
   
@@ -47,8 +47,8 @@ class TodosController < ApplicationController
     @todo = Todo.find(params[:id])
   end
   
-  def page_params
-    params.require(:todo).permit(:name)
+  def todo_params
+    params.require(:todo).permit(:name, :description, :status)
   end
-  
 end
+

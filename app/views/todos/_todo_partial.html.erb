@@ -1,8 +1,8 @@
-<!-- Display the details of an individual todo item -->
+<!-- _todo_partial.html.erb -->
 <%= turbo_frame_tag 'todos' do %>
   <div class="bg-gray-100 rounded p-4">
     <h3 class="text-lg font-bold">
-      <%= link_to todo.name, todo_path(todo) %>
+      <%= todo.name%>
     </h3>
     <p class="text-gray-600">Description: <%= todo.description %></p>
     <span class="text-sm text-gray-500">Status: <%= todo.status %></span>
